@@ -1,10 +1,14 @@
+import React from 'react';
 import {Background} from './components/Background/Background';
+import {useGetImages} from "./utils/hooks/useGetImages";
 
 export const App = () => {
-  return (
-      <>
-        <Background />
-        <h1>Memory Game</h1>
-      </>
-  );
+    useGetImages();
+
+    return (
+        <>
+            <Background/>
+            <h1>Memory Game</h1>
+        </>
+    );
 }
