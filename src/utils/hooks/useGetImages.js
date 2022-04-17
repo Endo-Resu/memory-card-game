@@ -1,9 +1,11 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {BASE_URL} from "../constants/constants";
 
 const getRandomPage = () => Math.round(Math.random() * (60 - 1) +1);
 
 export const useGetImages = () => {
+    const [images, setImages] = useState([]);
+
     const buildUrl = () => {
         let url = new URL(BASE_URL);
 
@@ -11,25 +13,26 @@ export const useGetImages = () => {
             query: 'nature',
             orientation: 'square',
             size: 'small',
-            pre_page: 2,
+            per_page: 2,
             page: getRandomPage(),
         });
 
         return url;
     };
 
-    const fetchPics = () => {
-        fetch(buildUrl(), {
-            headers: {
-                Authorization: process.env.REACT_APP_AUTH_KEY,
-            },
-        })
-            .then(data => data.json())
-            .then(data => console.log(data));
-    };
-
     useEffect(() => {
+        const fetchPics = () => {
+            fetch(buildUrl(), {
+                headers: {
+                    Authorization: process.env.REACT_APP_AUTH_KEY,
+                },
+            })
+                .then(data => data.json())
+                .then(data => setImages(data.photos));
+        };
+
         fetchPics();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
+
+    return images;
 };
