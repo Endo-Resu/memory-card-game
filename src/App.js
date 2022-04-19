@@ -1,6 +1,7 @@
 import React from 'react';
 import {Background} from './components/Background/Background';
 import {useGetImages} from "./utils/hooks/useGetImages";
+import {Settings} from "./components/Settings/Settings";
 
 export const App = () => {
     const images = useGetImages();
@@ -11,6 +12,7 @@ export const App = () => {
         <>
             <Background/>
             <h1>Memory Game</h1>
+            <Settings/>
         </>
     );
 }
