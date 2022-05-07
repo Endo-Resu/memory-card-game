@@ -4,7 +4,6 @@ import s from "./RadioBox.module.scss"
 
 export const RadioBox = ({name, selectedItem, onChange}) => {
     const isChecked = name === selectedItem;
-    console.log(isChecked);
 
     return (
         <>
