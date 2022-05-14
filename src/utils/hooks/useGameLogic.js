@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
 import {addUniqueIds, getFormedData, getPairedPics, shuffleCards} from "../index";
+import {PACES} from "../constants/constants";
 
-export const useGameLogic = (images) => {
-
+export const useGameLogic = (images, gamePace) => {
     const [cards, setCards] = useState([]);
+    const [visibleCards, setVisibleCards] = useState([]);
 
     const prepareCards = () => {
         const formedData = getFormedData(images);
@@ -23,6 +24,10 @@ export const useGameLogic = (images) => {
                 card.isShown = true;
             }
 
+            if (card.isShown) {
+                setVisibleCards(prevState => [...prevState, card.uniqueId])
+            }
+
             return card
         });
 
@@ -30,7 +35,9 @@ export const useGameLogic = (images) => {
     };
 
     const onCardClick = clickedCardId => {
-        flipCard(clickedCardId);
+        if (visibleCards < 2) {
+            flipCard(clickedCardId);
+        }
     };
 
     useEffect(() => {
@@ -38,6 +45,23 @@ export const useGameLogic = (images) => {
             prepareCards()
         }
     }, [images]);
+
+    useEffect(() => {
+        if (visibleCards.length > 2) {
+            const updatedCards = cards.map(card => {
+                if (visibleCards.indexOf(card.uniqueId) !== -1) {
+                    card.isShown = false;
+                }
+
+                return card
+            });
+
+            setTimeout(() => {
+                setCards(updatedCards);
+                setVisibleCards([])
+            }, PACES[gamePace])
+        }
+    }, [visibleCards]);
 
     return {cards, onCardClick};
 };
