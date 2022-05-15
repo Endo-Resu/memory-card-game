@@ -10,6 +10,10 @@ export const App = () => {
         setGameOptions(options);
     };
 
+    const restartGame = () => {
+        setGameOptions(null)
+    }
+
     return (
         <>
             <Background/>
@@ -17,7 +21,9 @@ export const App = () => {
             {!gameOptions ? (
                 <Settings startGame={startGame}/>
             ) : (
-                <Board gameOptions={gameOptions}/>
+                <Board gameOptions={gameOptions}
+                restartGame={restartGame}
+                />
             )}
         </>
     );
